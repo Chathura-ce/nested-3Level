@@ -21,7 +21,10 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::whereNull('category_id')
-            ->with('subcategories')
+            ->where('status',1)
+            ->with(['subcategories'=>function($query){
+                $query->where('status',1);
+            }])
             ->get();
 
         return view('categories.index', compact('categories'));
@@ -47,5 +50,10 @@ echo "</pre>";die;*/
         })->get();
 
         return view('categories.show', compact('category', 'products'));
+    }
+
+    public function create()
+    {
+        return view('categories.create');
     }
 }

@@ -23,8 +23,12 @@ class Category extends Model
 
     public function subcategories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Category::class)->with(['subcategories'=>function($query){
-            $query->withCount('products');
-        }]);
+        return $this->hasMany(Category::class)
+            ->with([
+                'subcategories' => function ($query) {
+                    $query->where('status', 1);
+                    $query->withCount('products');
+                }
+            ]);
     }
 }
