@@ -8,12 +8,21 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+   /* public function index()
+    {
+        $categories = Category::whereNull('category_id')
+            ->with(['subcategories'=>function($query){
+                $query->withCount('products');
+            }])->get();
+
+        return view('categories.index', compact('categories'));
+    }*/
+
     public function index()
     {
         $categories = Category::whereNull('category_id')
-            ->with(['subcategories.subcategories'=>function($query){
-                $query->withCount('products');
-            }])->get();
+            ->with('subcategories')
+            ->get();
 
         return view('categories.index', compact('categories'));
     }

@@ -16,8 +16,15 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
+    /*public function subcategories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Category::class)->with('subcategories');
+    }*/
+
     public function subcategories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Category::class)->with(['subcategories'=>function($query){
+            $query->withCount('products');
+        }]);
     }
 }
